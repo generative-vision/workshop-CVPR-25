@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Generative Models for Computer Vision</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="CVPR 2024 Workshop">
+    <meta name="keywords" content="bootstrap, business, creative">
+    <meta name="author" content="Createx Studio">
+	  
+	  
+	  
+	  
+    <link rel="icon" href="./assets/img/logo.png">
+	  
+<!--     <meta property="og:image" content="https://fnzhan.github.io/neural-gauge-fields/img/ngf_logo.png"> -->
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="./assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="./assets/vendor/boxicons/css/boxicons.min.css"/>
+    <link rel="stylesheet" media="screen" href="./assets/vendor/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" media="screen" href="./assets/vendor/lightgallery/css/lightgallery-bundle.min.css"/>
+
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="./assets/css/theme.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Page loading styles -->
+    <style>
+      pre {
+        border: 1px solid #eff2fc;
+        display: none;
+        font-size: 12px;
+        margin: 5px 0;
+        max-width: 96%;
+        overflow: auto;
+        padding: 12px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .dark-mode .page-loading {
+        background-color: #131022;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #9397ad;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #b4b7c9;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      .dark-mode .page-spinner {
+        border-color: rgba(255,255,255,.4);
+        border-right-color: transparent;
+      }
+      @-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      #tracks ul {
+        line-height: 200%
+      }
+
+      #schedule th.time {
+        width: 200px
+      }
+
+      footer {
+        /*background-color: #131022;*/
+/*         background-image: url(../assets/img/backgrounds/footer-bg.jpg); */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+      }
+
+      footer::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        background-color: rgba(31, 39, 73, .97);
+      }
+
+      @media only screen and (max-width: 767px) {
+        .swiper-slide-active {
+          padding: 40px;
+        }
+      }
+    </style>
+
+    <!-- Theme mode -->
+    <script>
+      let mode = window.localStorage.getItem('mode'),
+          root = document.getElementsByTagName('html')[0];
+      if (mode !== undefined && mode === 'dark') {
+        root.classList.add('dark-mode');
+      } else {
+        root.classList.remove('dark-mode');
+      }
+    </script>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading');
+          preloader.classList.remove('active');
+          setTimeout(function () {
+            preloader.remove();
+          }, 1000);
+        };
+      })();
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  </head>
+
+
+  <!-- Body -->
+  <body>
+
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div><span>Loading...</span>
+      </div>
+    </div>
+    
+
+                    <main class="page-wrapper">
+            <section class="jarallax dark-mode bg-dark py-xxl-5" data-jarallax data-speed="0.4">
+                <span class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-dark-translucent"></span>
+                <div class="jarallax-img" style="background-image: url(./data/bg.jpg);"></div>
+                <div class="position-relative text-center zindex-5 ">
+
+
+
+          <p style="font-size:65px; color:rgb(255, 255, 255); font-weight: 65" align="center"><b>3rd Generative Models for Computer Vision</b></p>
+           <p style="font-size:50px; color:rgb(255, 255, 255); font-weight: 50" align="center">CVPR 2025 Workshop</p><br>
+          <p class="fs-4 text-light opacity-70 pb-2 mb-lg-5">
+                          <span style="font-size:1.3rem"> <i class="fa fa-calendar" style="color:#f029cf"></i> 8:45am - 5:00pm, Tuesday, June 18th, 2024  &nbsp; &nbsp; &nbsp;
+                            <i class="fa fa-map-marker" style="color:#f029cf"></i> Summit 432 </span>
+                        </p>
+          
+        </div>
+      </section>
+      <!-- tracks -->
+      <section id="tracks" class="container py-5">
+<!--         <div class="row pt-4 pb-3">
+          <h2 class="text-center text-sm-start pb-2 pb-lg-0">Challenge Tracks</h2>
+        </div> -->
+        <div class="row">
+	  <div class="row pt-4 pb-3">
+            <h2 class="text-center text-sm-start pb-2 pb-lg-0">Overview</h2>
+          </div>
+          <!-- Item -->
+<!--           <h3>Overview</h3> -->
+          <div class="col">
+            <p align="justify">
+                Recent advances in generative modeling leveraging generative adversarial networks, auto-regressive models,
+                neural fields and diffusion models have enabled the synthesis of near photorealistic images, drastically
+                increasing the visibility and popularity of generative modeling across the computer vision research community.
+                However, these impressive advances in generative modeling have not yet found wide adoption in computer vision
+                for visual recognition tasks. In this workshop, we aim to bring together researchers from the fields of image
+                synthesis and computer vision to facilitate discussions and progress at the intersection of those two subfields.
+                We investigate the question: "How can visual recognition benefit from the advances in generative image modeling?".
+                We invite a diverse set of experts to discuss their recent research results and future directions for generative
+                modeling and computer vision, with a particular focus on the intersection between image synthesis and visual
+                recognition. We hope this workshop will lay the foundation for future development of generative models for
+                computer vision tasks.
+            </p>
+		  
+            <div style="text-align: center;">
+		<img src="./data/overview.jpg" width="1200">
+	    </div>
+          </div>
+
+
+        </div>
+      </section>
+	    
+	    
+      <!-- Speakers -->
+      <section id="speakers" class="container py-5">
+        <div class="row pt-4 pb-3">
+          <h2 class="text-center text-sm-start pb-2 pb-lg-0">Invited Speakers</h2>
+        </div>
+        <div class="row justify-content-center">
+
+      <div class="col-md-3 py-3">
+               <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                 <img src="./data/kaiming.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                 <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://jiajunwu.com/" target="_blank">Kaiming He</a></h5>
+                 <p class="fs-sm mb-3">MIT</p>
+                </div>
+              </div>
+
+	      <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/katerina.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://www.cs.cmu.edu/~katef/" target="_blank">Katerina Fragkiadaki</a></h5>
+                  <p class="fs-sm mb-3">CMU</p>
+                </div>
+              </div>
+		
+	     <!-- <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/devi.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://faculty.cc.gatech.edu/~parikh/" target="_blank">Devi Parikh</a></h5>
+                  <p class="fs-sm mb-3">Gerogia Tech</p>
+                </div>
+              </div>-->
+		
+	      <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/federico.png" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://federicotombari.github.io/" target="_blank">Federico Tombari</a></h5>
+                  <p class="fs-sm mb-3">Google</p>
+                </div>
+              </div>
+		
+	      <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/siyu.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://vlg.inf.ethz.ch/team/Prof-Dr-Siyu-Tang.html" target="_blank">Siyu Tang</a></h5>
+                  <p class="fs-sm mb-3">ETH Zurich</p>
+                </div>
+              </div>
+		
+		
+	      <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/gian.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="" target="_blank">Gianluca Corrado</a></h5>
+                  <p class="fs-sm mb-3">Wayve</p>
+                </div>
+              </div>
+
+            <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/saining.png" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://www.sainingxie.com/" target="_blank">Saining Xie</a></h5>
+                  <p class="fs-sm mb-3">New York University</p>
+                </div>
+              </div>
+
+		
+	      <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/alan.jpeg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://ccvl.jhu.edu/team/" target="_blank">Alan Yuille</a></h5>
+                  <p class="fs-sm mb-3">JHU</p>
+                </div>
+              </div>
+
+	      <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/av.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://www.robots.ox.ac.uk/~vedaldi/" target="_blank">Andrea Vedaldi</a></h5>
+                  <p class="fs-sm mb-3">University of Oxford</p>
+                </div>
+              </div>
+
+
+
+
+
+      <section id="submission" class="container py-5">
+          <div class="row pt-4 pb-3">
+            <h2 class="text-center text-sm-start pb-2 pb-lg-0">Covered Topics</h2>
+          </div>
+          <div class="row">
+            <div class="col">
+		    <ul style="font-size:15px;">
+<!--			    <b>Submission site:</b> <a href="https://cmt3.research.microsoft.com/GCV2024">https://cmt3.research.microsoft.com/GCV2024</a><br>-->
+<!--			    <b>Author kit:</b> <a href="https://github.com/cvpr-org/author-kit/archive/refs/tags/CVPR2024-v2.zip">CVPR Author KIT</a>.<br>-->
+<!--			    We invite submissions of both <b>short and long papers</b> (4 pages and 8 pages respectively excluding references). The long papers will be included in the proceedings of CVPR.-->
+                Potential topics include but are not limited to:
+                        <br>
+
+                        <li style="margin-left:30px">
+                            Advances in generative image models
+                        </li>
+                        <li style="margin-left:30px">
+                            Inversion of generative image models
+                        </li>
+                        <li style="margin-left:30px">
+                            Training computer vision with realistic synthetic images
+                        </li>
+                        <li style="margin-left:30px">
+                            Benchmarking computer vision with generative models
+                        </li>
+                        <li style="margin-left:30px">
+                            Analysis-by-synthesis / render-and-compare approaches for visual recognition
+                        </li>
+                        <li style="margin-left:30px">
+                            Self-supervised learning with generative models
+                        </li>
+                        <li style="margin-left:30px">
+                            Adversarial attacks and defenses with generative models
+                        </li>
+                        <li style="margin-left:30px">
+                            Out-of-distribution generalization and detection with generative models
+                        </li>
+                        <li style="margin-left:30px">
+                            Ethical considerations in generative modeling, dataset and model biases
+                        </li>
+                </ul>
+
+                <br>
+              </div>
+        </div>
+
+<!--        </div>-->
+      </section>
+
+
+<!--            <section id="dates" class="container py-5">-->
+<!--        <div class="row pt-4 pb-3">-->
+<!--          <div class="col-12">-->
+<!--            <h2 class="text-center text-sm-start pb-2 pb-lg-0 mb-4 mb-lg-5">Important Dates</h2>-->
+<!--          </div>-->
+<!--          <div class="col-lg-9 offset-lg-1">-->
+<!--            &lt;!&ndash; Tab panes &ndash;&gt;-->
+<!--            <div class="tab-content">-->
+<!--              &lt;!&ndash; Workshop &ndash;&gt;-->
+<!--              <div class="tab-pane fade show active" id="workshop" role="tabpanel" aria-labelledby="workshop-tab">-->
+<!--                <div class="table-responsive">-->
+<!--                  <table class="table">-->
+<!--                    <thead>-->
+<!--                      <tr>-->
+<!--                        <th class="event">Event</th>-->
+<!--                        <th class="date">Date (Anywhere on Earth)</th>-->
+<!--                      </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                      <tr>-->
+<!--                        <th scope="row">Workshop paper submission deadline</th>-->
+<!--                        <td>March 27, 2024</td>-->
+<!--                      </tr>-->
+<!--                      <tr>-->
+<!--                        <th scope="row">Decisions</th>-->
+<!--                        <td>April 8, 2024</td>-->
+<!--                      </tr>-->
+<!--                      <tr>-->
+<!--                        <th scope="row">Camera ready</th>-->
+<!--                        <td>April 12, 2024</td>-->
+<!--                      </tr>-->
+<!--                    </tbody>-->
+<!--                  </table>-->
+<!--                </div>-->
+<!--              </div>-->
+
+
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </section>-->
+
+
+
+
+
+
+<!--      <section id="schedule" class="container py-5">-->
+<!--          <div class="row pt-4 pb-3">-->
+<!--            <h2 class="text-center text-sm-start pb-2 pb-lg-0">Schedule</h2>-->
+<!--          </div>-->
+<!--          <table>-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th>18th of June, UTC-7</th>-->
+<!--                    <th> </th>-->
+<!--                    <th> </th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+
+<!--            <tbody>-->
+<!--                <tr>-->
+<!--                    <td>8:45</td>-->
+<!--                    <td>Opening</td>-->
+<!--                    <td></td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>9:00</td>-->
+<!--                    <td><strong>Invited Talk:  Gianluca Corrado</strong></td>-->
+<!--                    <td></td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>9:40</td>-->
+<!--                    <td><strong>Invited Talk: Siyu Tang</strong></td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>10:20</td>-->
+<!--                    <td>Coffee Break</td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>10:40</td>-->
+<!--                    <td><strong>Invited Talk: Saining Xie</strong></td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>11:20</td>-->
+<!--                    <td><strong>Invited Talk: Alan Yuille</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
+<!--                    <td>  </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>12:00</td>-->
+<!--                    <td>Lunch</td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>12:30</td>-->
+<!--                    <td>Posters (Arch Building, Exhibition Hall, #1-40)</td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>14:00</td>-->
+<!--                    <td><strong>Invited Talk: Jiajun Wu</strong></td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>14:40</td>-->
+<!--                    <td><strong>Invited Talk: Katerina Fragkiadaki</strong></td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>15:20</td>-->
+<!--                    <td>Coffee Break</td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>15:40</td>-->
+<!--                    <td><strong>Invited Talk: Andrea Vedaldi</strong></td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>16:20</td>-->
+<!--                    <td><strong>Invited Talk: Federico Tombari</strong></td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                    <td>17:00</td>-->
+<!--                    <td>Closing</td>-->
+<!--                    <td> </td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--      </section>-->
+
+
+
+<!--      <section id="papers" class="container py-5">-->
+<!--         <div class="row pt-4 pb-3">-->
+<!--            <h2 class="text-center text-sm-start pb-2 pb-lg-0">Accepted Papers</h2>-->
+<!--         </div>-->
+<!--            <p>-->
+<!--                <font size="4.5"><b>Long Papers:</b></font>-->
+<!--                To appear in the proceeding of CVPR 2024.-->
+<!--            </p>-->
+
+
+<!--            <br>-->
+
+<!--            <p>-->
+<!--                <font size="4.5"><b>Short Papers:</b></font>-->
+<!--            </p>-->
+<!--            <ul>-->
+<!--                <li>-->
+<!--                    <b>As-Plausible-As-Possible: Plausibility-Aware Mesh Deformation Using 2D Diffusion Priors</b> [<a href="papers/2.pdf">Paper</a>] [<a href="papers/2_supp.pdf">Supplementary</a>] <br>-->
+<!--                    Seungwoo Yoo, Kunho Kim, Vladimir Kim, Minhyuk Sung-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Generative AI in Vision: A Survey on Models, Metrics and Applications</b> [<a href="papers/11.pdf">Paper</a>] <br>-->
+<!--                    Gaurav Raut, Apoorv Singh-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Robustness of Generative Models using Language Guidance for Low-Level Vision Tasks: Findings from Depth Estimation</b> [<a href="papers/13.pdf">Paper</a>] <br>-->
+<!--                    Agneet Chatterjee, Tejas Gokhale, Chitta R Baral, Yezhou Yang, Anand Bhattad-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Intrinsic LoRA: A Generalist Approach for Discovering Knowledge in Generative Models</b> [<a href="papers/18.pdf">Paper</a>] <br>-->
+<!--                    Xiaodan Du, Nicholas I Kolkin, Greg Shakhnarovich, Anand Bhattad-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>GL-NeRF: Gauss-Laguerre Quadrature for Volume Rendering</b> [<a href="papers/22.pdf">Paper</a>] <br>-->
+<!--                    Yue Fan, Yongqin Xian, Xiaohua Zhai, Alexander Kolesnikov, Muhammad Ferjad Naeem, Bernt Schiele, Federico Tombari-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Synthesizing Image with High-Quality Segmentation Mask by Prompting Large Vision Model</b> [<a href="papers/23.pdf">Paper</a>] [<a href="papers/23_supp.pdf">Supplementary</a>] <br>-->
+<!--                    Xuan-Tuyen Tran-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Robust Disaster Assessment from Aerial Imagery Using Text-to-Image Synthetic Data</b> [<a href="papers/24.pdf">Paper</a>] <br>-->
+<!--                    Tarun Kalluri, Jihyeon Lee, Kihyuk Sohn, Sahil Singla, Manmohan Chandraker, Joseph Xu, Jeremiah Liu-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Posterior Distillation Sampling</b> [<a href="papers/25.pdf">Paper</a>] [<a href="papers/25_supp.pdf">Supplementary</a>] <br>-->
+<!--                    Juil Koo, Chanho Park, Minhyuk Sung-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Learning Compositional Language-based Object Detection with Diffusion-based Synthetic Data</b> [<a href="papers/28.pdf">Paper</a>] <br>-->
+<!--                    Kwanyong Park, Kuniaki Saito, Donghyun Kim-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>KOALA: Fast and Memory-Efficient Latent Diffusion Models via Self-Attention Distillation</b> [<a href="papers/30.pdf">Paper</a>] <br>-->
+<!--                    Youngwan Lee, Kwanyong Park, Yoorhim Cho, Yong-Ju Lee, Sung Ju Hwang-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Turns Out I'm Not Real: Towards Robust Detection of AI-Generated Videos</b> [<a href="papers/38.pdf">Paper</a>] <br>-->
+<!--                    Qingyuan Liu, Pengyuan Shi, Yun-Yun Tsai, Chengzhi Mao, Junfeng Yang-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Diffusion Models for Open-Vocabulary Segmentation</b> [<a href="papers/41.pdf">Paper</a>] <br>-->
+<!--                    Laurynas Karazija, Iro Laina, Andrea Vedaldi, Christian Rupprecht-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Robust Concept Erasure Using Task Vectors</b> [<a href="papers/42.pdf">Paper</a>] <br>-->
+<!--                    Minh Pham, Kelly O. Marshall, Chinmay Hegde, Niv Cohen-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>ExtraNeRF: Visibility-Aware View Extrapolation of Neural Radiance Fields with Diffusion Models</b> [<a href="papers/45.pdf">Paper</a>] <br>-->
+<!--                    Meng-Li Shih, Wei-Chiu Ma, Lorenzo Boyice, Aleksander Holynski, Forrester Cole, Brian Curless, Janne Kontkanen-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Do Counterfactual Examples Complicate Adversarial Training?</b> [<a href="papers/47.pdf">Paper</a>] <br>-->
+<!--                    Eric C Yeats, Cameron M Darwin, Eduardo Ortega, Frank Liu, Hai Li-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>CAT: Contrastive Adapter Training for Personalized Image Generation</b> [<a href="papers/50.pdf">Paper</a>] <br>-->
+<!--                    Jae Wan Park, Junyoung Koh, Sang Hyun Park, Junha Lee, Min Song-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>ZoomLDM: Latent Diffusion Model for multi-scale conditional histopathology image generation</b> [<a href="papers/55.pdf">Paper</a>] [<a href="papers/55_supp.pdf">Supplementary</a>] <br>-->
+<!--                    Srikar Yellapragada, Alexandros Graikos, Prateek Prasanna, Rajarsi Gupta, Joel Saltz, Dimitris Samaras-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Causal Diffusion Autoencoders: Toward Representation-Enabled Counterfactual Generation via Diffusion Probabilistic Models</b> [<a href="papers/59.pdf">Paper</a>] <br>-->
+<!--                    Aneesh Komanduri, Chen Zhao, Feng Chen, Xintao Wu-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Spatially Composable Diffusion</b> [<a href="papers/61.pdf">Paper</a>] <br>-->
+<!--                    Ryan Lian, Xingjian Bai, Joy Hsu, Weiyu Liu, Jiayuan Mao, Jiajun Wu-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <b>Learning Multimodal Latent Space with EBM Prior and MCMC Inference</b> [<a href="papers/64.pdf">Paper</a>] <br>-->
+<!--                    Shiyu Yuan, Carlo Lipizzi, Tian Han-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--    </section>-->
+
+
+      <!-- Organizers -->
+      <section id="organizers" class="container py-5">
+	      
+        <div class="container">
+          <div class="row pt-4 pb-3">
+            <h2 class="text-center text-sm-start pb-2 pb-lg-0">Organizers</h2>
+          </div>
+		
+          <div class="row justify-content-center">
+
+              <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/adam.jpeg" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Ralph Edwards">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://gvrl.mpi-inf.mpg.de/" target="_blank">Adam Kortylewski</a></h5>
+                  <p class="fs-sm mb-3">MPI-INF & Uni of Freiburg</p>
+                </div>
+              </div>
+
+              <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/fangneng.png" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Ralph Edwards">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://fnzhan.com/" target="_blank">Fangneng Zhan</a></h5>
+                  <p class="fs-sm mb-3">Harvard University & MIT</p>
+                </div>
+              </div>
+
+              <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/tian.jpg" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Ralph Edwards">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://lingjie0206.github.io/" target="_blank">Tian Han</a></h5>
+                  <p class="fs-sm mb-3">Stevens Institute of Technology</p>
+                </div>
+              </div>
+
+
+              <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/christian.png" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://people.mpi-inf.mpg.de/~theobalt/" target="_blank">Christian Theobalt</a></h5>
+                  <p class="fs-sm mb-3">MPI-INF</p>
+                </div>
+              </div>
+
+
+	        <div class="col-md-3 py-3">
+                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
+                  <img src="./data/alan.jpeg" class="d-block rounded-circle mx-auto mb-3" width="162">
+                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://cseweb.ucsd.edu/~haosu/" target="_blank">Alan Yuille</a></h5>
+                  <p class="fs-sm mb-3">JHU</p>
+                </div>
+              </div>
+
+          </div>
+		
+        </div>
+      </section>
+	    
+	    
+
+
+
+      <br>
+      <br>
+      <br>
+<!--      <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=84848c&w=400&t=tt&d=2JHVvnU97UBcQG0xYLAvglePjkssjDLpbeRhZQhM_1s&co=a1cded&ct=ffffff&cmo=3acc3a&cmn=ff5353'></script>-->
+<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=474747&w=386&t=n&d=_KRcvWlAZADIQTJh5QCVWaDrwAtwPMAffAZq-yBjTao&co=85bde5'></script>
+      <br>
+      <br>
+      <br>
+
+
+
+
+
+    <style>
+      .img-container {
+        text-align: center;
+        display: block;
+      }
+    </style>
+
+<!--   <br> -->
+  
+
+
+  </main>
+    <!-- Footer -->
+
+    <!-- Back to top button -->
+    <a href="#top" class="btn-scroll-top" data-scroll>
+      <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+      <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+    </a>
+
+
+    <!-- Vendor Scripts -->
+    <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="./assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="./assets/vendor/lightgallery/lightgallery.min.js"></script>
+    <script src="./assets/vendor/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+    <script src="./assets/vendor/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+    <script src="./assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
+
+    <!-- Main Theme Script -->
+    <script src="./assets/js/theme.min.js"></script>
+    <script>
+      document.addEventListener('scroll', function(e) {
+        let currentOffset = window.scrollY + 80,
+            currentSection = "",
+            sections = ["tracks", "submission", "dates", "schedule", "speakers", "organizers", "awards", "previous"];
+
+        for (let i = 0; i < sections.length; ++ i) {
+          if (currentOffset < document.getElementById(sections[i]).offsetTop) {
+            break;
+          }
+          currentSection = sections[i];
+        }
+
+        let navbar = document.getElementsByClassName("navbar-nav")[0],
+            navLinks = navbar.getElementsByTagName("a");
+
+        for (let i = 0; i < navLinks.length; ++ i) {
+          navLinks[i].classList.remove("active");
+          if (navLinks[i].getAttribute("href") == "#" + currentSection) {
+            navLinks[i].classList.add("active");
+          }
+        }
+      })
+    </script>
+    <script type="text/javascript">
+      $('#schedule').on('click', '.abstract', function () {
+          var bibtexBlock = $('pre', $(this).parent().parent().parent()),
+              isVisible = bibtexBlock.is(':visible')
+            
+          if (isVisible) {
+              bibtexBlock.slideUp(36)
+          } else {
+              bibtexBlock.slideDown(36)
+          }
+      })
+      </script>
+
+    </body>
+</html>
