@@ -164,6 +164,57 @@
       }
     </style>
 
+
+               <style>
+/* Artistic gradient overlay */
+.art-gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(115deg, rgba(0,0,0,0.3) 0%, rgba(25,25,112,0.2) 50%, rgba(255,105,180,0.15) 100%);
+    mix-blend-mode: screen;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Grainy effect */
+.grainy-bg::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/asfalt-light.png'); /* You can swap this with a data URL or local PNG */
+    opacity: 0.04;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Title glow effect */
+.art-title {
+    font-size: 65px;
+    font-family: 'Calibri', sans-serif;
+    color: white;
+    font-weight: 650;
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(173, 216, 230, 0.4),
+        0 0 40px rgba(135, 206, 250, 0.2);
+    position: relative;
+    z-index: 3;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
     <!-- Theme mode -->
     <script>
       let mode = window.localStorage.getItem('mode'),
@@ -202,18 +253,30 @@
     </div>
     
 
-                    <main class="page-wrapper">
+    <main class="page-wrapper">
             <section class="jarallax dark-mode bg-dark py-xxl-5" data-jarallax data-speed="0.4">
                 <span class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-dark-translucent"></span>
-                <div class="jarallax-img" style="background-image: url(./data/bg.jpg);"></div>
-                <div class="position-relative text-center zindex-5 ">
+<!--                <div class="jarallax-img" style="-->
+<!--                    background-image: url(./data/bg.jpg);-->
+<!--                    filter: blur(3px);-->
+<!--                    transform: scale(1.0); /* prevents edges from showing when blurred */-->
+<!--                "></div>-->
+                <div class="jarallax-img" style="background-image: url(./data/bg.png);"></div>
 
 
+<!--                <div class="position-relative text-center zindex-5 ">-->
 
-          <p style="font-size:65px; color:rgb(255, 255, 255); font-weight: 65" align="center"><b>3rd Workshop on Generative Models for Computer Vision</b></p>
+                    <div class="position-relative text-center zindex-5 overflow-hidden pt-1 py-md-4">
+                    <p class="art-title" align="center">
+                        <span>3rd Workshop on Generative Models <br> for Computer Vision</span>
+                    </p>
+
+<!--          <p style="font-size:65px; color:rgb(255, 255, 255); font-weight: 65" align="center"><b>3rd Workshop on Generative Models <br> for Computer Vision</b></p>-->
+
+
            <p style="font-size:50px; color:rgb(255, 255, 255); font-weight: 50" align="center">CVPR 2025</p><br>
           <p class="fs-4 text-light opacity-70 pb-2 mb-lg-5">
-                          <span style="font-size:1.3rem"> <i class="fa fa-calendar" style="color:#f029cf"></i> TBD
+                          <span style="font-size:1.3rem"> <i class="fa fa-calendar" style="color:#f029cf"></i>
                               8:45am - 5:00pm, Tuesday, June 11th, 2025  &nbsp; &nbsp; &nbsp;
                             <i class="fa fa-map-marker" style="color:#f029cf"></i> Music City Center, Nashville, Tennessee</span>
                         </p>
@@ -267,7 +330,7 @@
                <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                  <img src="./data/kaiming.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                  <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://people.csail.mit.edu/kaiming/" target="_blank">Kaiming He</a></h5>
-                 <p class="fs-sm mb-3">MIT</p>
+                 <p class="fs-md mb-3">MIT</p>
                 </div>
               </div>
 
@@ -275,7 +338,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/rana.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://vlg.inf.ethz.ch/team/Prof-Dr-Siyu-Tang.html" target="_blank">Rana Hanocka</a></h5>
-                  <p class="fs-sm mb-3">University of Chicago</p>
+                  <p class="fs-md mb-3">University of Chicago</p>
                 </div>
               </div>
 
@@ -283,7 +346,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/yingnian.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="http://www.stat.ucla.edu/~ywu/me.html" target="_blank">Yingnian Wu</a></h5>
-                  <p class="fs-sm mb-3">UCLA</p>
+                  <p class="fs-md mb-3">UCLA</p>
                 </div>
               </div>
 
@@ -293,7 +356,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/jiatao.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://jiataogu.me/" target="_blank">Jiatao Gu</a></h5>
-                  <p class="fs-sm mb-3">Apple & UPenn</p>
+                  <p class="fs-md mb-3">Apple & UPenn</p>
                 </div>
               </div>
 
@@ -302,7 +365,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/bjorn.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://ommer-lab.com/people/ommer/" target="_blank">Björn Ommer</a></h5>
-                  <p class="fs-sm mb-3">Ludwig Maximilian University of Munich</p>
+                  <p class="fs-md mb-3">Ludwig Maximilian University of Munich</p>
                 </div>
               </div>
 		
@@ -310,7 +373,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/zhuowen.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://pages.ucsd.edu/~ztu/" target="_blank">Zhuowen Tu</a></h5>
-                  <p class="fs-sm mb-3">UCSD</p>
+                  <p class="fs-md mb-3">UCSD</p>
                 </div>
               </div>
 		
@@ -318,7 +381,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/yiyi.jpg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://yiyiliao.github.io/" target="_blank">Yiyi Liao</a></h5>
-                  <p class="fs-sm mb-3">Zhejiang University</p>
+                  <p class="fs-md mb-3">Zhejiang University</p>
                 </div>
               </div>
 
@@ -327,7 +390,7 @@
                 <div class="card card-body card-hover bg-light border-0 text-center mx-2">
                   <img src="./data/alan.jpeg" class="d-block rounded-circle mx-auto mb-3" width="162">
                   <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://ccvl.jhu.edu/team/" target="_blank">Alan Yuille</a></h5>
-                  <p class="fs-sm mb-3">JHU</p>
+                  <p class="fs-md mb-3">JHU</p>
                 </div>
               </div>
 
@@ -646,7 +709,7 @@
         <div class="card card-body card-hover bg-light border-0 text-center mx-2">
           <img src="./data/adam.jpeg" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Adam Kortylewski">
           <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://gvrl.mpi-inf.mpg.de/" target="_blank">Adam Kortylewski</a></h5>
-          <p class="fs-sm mb-3">MPI-INF & Uni of Freiburg</p>
+          <p class="fs-md mb-3">MPI-INF &thinsp;&amp;&thinsp; Uni of Freiburg</p>
         </div>
       </div>
 
@@ -654,7 +717,7 @@
         <div class="card card-body card-hover bg-light border-0 text-center mx-2">
           <img src="./data/fangneng.png" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Fangneng Zhan">
           <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://fnzhan.com/" target="_blank">Fangneng Zhan</a></h5>
-          <p class="fs-sm mb-3">Harvard University</p>
+          <p class="fs-md mb-3">Harvard University &thinsp;&amp;&thinsp; MIT</p>
         </div>
       </div>
 
@@ -662,7 +725,7 @@
         <div class="card card-body card-hover bg-light border-0 text-center mx-2">
           <img src="./data/tian.jpg" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Tian Han">
           <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://hthth0801.github.io/" target="_blank">Tian Han</a></h5>
-          <p class="fs-sm mb-3">Stevens Institute of Technology</p>
+          <p class="fs-md mb-3">Stevens Institute of Technology</p>
         </div>
       </div>
     </div>
@@ -673,7 +736,7 @@
         <div class="card card-body card-hover bg-light border-0 text-center mx-2">
           <img src="./data/jieneng.png" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Jieneng Chen">
           <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://beckschen.github.io/" target="_blank">Jieneng Chen</a></h5>
-          <p class="fs-sm mb-3">JHU</p>
+          <p class="fs-md mb-3">JHU</p>
         </div>
       </div>
 
@@ -681,7 +744,7 @@
         <div class="card card-body card-hover bg-light border-0 text-center mx-2">
           <img src="./data/christian.png" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Christian Theobalt">
           <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://people.mpi-inf.mpg.de/~theobalt/" target="_blank">Christian Theobalt</a></h5>
-          <p class="fs-sm mb-3">MPI-INF</p>
+          <p class="fs-md mb-3">MPI-INF</p>
         </div>
       </div>
 
@@ -689,7 +752,7 @@
         <div class="card card-body card-hover bg-light border-0 text-center mx-2">
           <img src="./data/alan.jpeg" class="d-block rounded-circle mx-auto mb-3" width="162" alt="Alan Yuille">
           <h5 class="fw-medium fs-lg mb-1"><a style="text-decoration:none" href="https://www.cs.jhu.edu/~ayuille/" target="_blank">Alan Yuille</a></h5>
-          <p class="fs-sm mb-3">JHU</p>
+          <p class="fs-md mb-3">JHU</p>
         </div>
       </div>
     </div>
